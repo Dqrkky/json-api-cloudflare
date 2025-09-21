@@ -1,3 +1,10 @@
+# JSON Storage API (Cloudflare D1 + Hono)
+A simple JSON storage API built with Hono + Cloudflare Workers abd Cloudflare D1.
+Save, retrieve, update, and delete JSON objects by ID.
+
+---
+
+## How To
 ```txt
 npm install
 npm run dev
@@ -19,14 +26,6 @@ Pass the `CloudflareBindings` as generics when instantiation `Hono`:
 // src/index.ts
 const app = new Hono<{ Bindings: CloudflareBindings }>()
 ```
-
-# JSON Storage API (Cloudflare D1 + Hono)
-Serverless JSON storage API using Cloudflare Workers and D1.
-
-# JSON Storage API
-
-A simple JSON storage API built with Hono + Cloudflare D1.
-Save, retrieve, update, and delete JSON objects by ID.
 
 ---
 
