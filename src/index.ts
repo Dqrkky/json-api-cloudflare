@@ -35,7 +35,7 @@ app.post('/save', async (c) => {
 });
 
 app.get('/get/:id', async (c) => {
-  const id = c.req.param('id')
+  const id = c.req.param('id');
 
   const row = await c.env.MY_DB.prepare(
     'SELECT id, name, data FROM json_data WHERE id = ?'
