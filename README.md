@@ -1,5 +1,5 @@
 # JSON Storage API (Cloudflare D1 + Hono)
-A simple JSON storage API built with Hono + Cloudflare Workers abd Cloudflare D1.
+A simple JSON storage API built with Hono + Cloudflare Workers and Cloudflare D1.
 Save, retrieve, update, and delete JSON objects by ID.
 
 ---
