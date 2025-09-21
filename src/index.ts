@@ -59,6 +59,63 @@ app.get('/get/:id', async (c) => {
   });
 });
 
+app.put('/update/:id', async (c) => {
+  try {
+    const id = c.req.param('id');
+    const body = await c.req.json<{ name?: string; data?: unknown }>();
+    const { name, data } = body;
+
+    if (name === undefined && data === undefined) {
+      return c.json({ error: "At least one of 'name' or 'data' must be provided" }, 400);
+    };
+
+    // Build query dynamically
+    const fields: string[] = [];
+    const values: any[] = [];
+
+    if (name !== undefined) {
+      fields.push('name = ?');
+      values.push(name);
+    };
+    if (data !== undefined) {
+      fields.push('data = ?');
+      values.push(JSON.stringify(data));
+    };
+
+    values.push(id);
+
+    const result = await c.env.MY_DB.prepare(
+      `UPDATE json_data SET ${fields.join(', ')} WHERE id = ?`
+    ).bind(...values).run();
+
+    if (result.meta.changes === 0) {
+      return c.json({ error: 'Record not found' }, 404);
+    };
+
+    return c.json({ success: true });
+  } catch (e: any) {
+    return c.json({ error: e.message }, 500);
+  };
+});
+
+app.delete('/delete/:id', async (c) => {
+  try {
+    const id = c.req.param('id');
+
+    const result = await c.env.MY_DB.prepare(
+      'DELETE FROM json_data WHERE id = ?'
+    ).bind(id).run();
+
+    if (result.meta.changes === 0) {
+      return c.json({ error: 'Record not found' }, 404);
+    };
+
+    return c.json({ success: true });
+  } catch (e: any) {
+    return c.json({ error: e.message }, 500);
+  };
+});
+
 app.get('/all', async (c) => {
   const rows = await c.env.MY_DB.prepare(
     'SELECT id, name, data FROM json_data'
